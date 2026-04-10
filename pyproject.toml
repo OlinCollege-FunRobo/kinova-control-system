@@ -1,0 +1,14 @@
+[project]
+name = "kinova-control-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "kortex-api",
+    "nptyping>=2.0.1",
+    "numpy>=2.4.4",
+]
+
+[tool.uv.sources]
+kortex-api = { path = "kortex_api-2.3.0.post34-py3-none-any.whl" }
