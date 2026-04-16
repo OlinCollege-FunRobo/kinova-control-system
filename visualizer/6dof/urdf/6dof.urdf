@@ -41,7 +41,7 @@
   </link>
   
   <joint name="J0" type="revolute">
-    <origin xyz="0 0 0.12825" rpy="0 0 0" />
+    <origin xyz="0 0 0.12825" rpy="0 0 -1.57" />
     <parent link="BASE" />
     <child link="SHOULDER" />
     <axis xyz="0 0 1" />
@@ -336,4 +336,25 @@
     <axis xyz="0 0 -1" />
     <limit lower="-0.21" upper="1.03" effort="1000" velocity="1000" />
   </joint>
+
+  <material name="transparent_blue">
+    <color rgba="0.0 0.5 1.0 0.2" />
+  </material>
+
+  <link name="WORKSPACE_INDICATOR">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.6 0.6 0.6" /> 
+      </geometry>
+      <material name="transparent_blue" />
+    </visual>
+    </link>
+
+  <joint name="workspace_joint" type="fixed">
+    <origin xyz="0.4 0.0 0.3" rpy="0 0 0" />
+    <parent link="BASE" />
+    <child link="WORKSPACE_INDICATOR" />
+  </joint>
+  
 </robot>
