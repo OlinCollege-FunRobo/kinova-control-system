@@ -1,58 +1,14 @@
-from backend.kinova import Kinova
-import sys, time
+from backend.kinova import BaseApp
 import numpy as np
 import queue, threading
 
-class Main:
+class Main(BaseApp):
         
-    def __init__(self, loop_rate = 20) -> None:
-        using_suction = False
-        
-        if(using_suction is None):
-            raise ValueError("If you are using the suction cup set using_suction to true. If you are not using the suction cup set using_suction to false")
-        else:
-            self.kinova_robot = Kinova(is_suction=using_suction)
-            
-        self.LOOP_RATE = 1 / float(loop_rate)
-        
-        self.action_queue = queue.Queue()
-
-        self.is_running = True
-        
-        self.start()
-        
-        self.background_thread = threading.Thread(target=self._start_loop, daemon=True)
-        self.background_thread.start()
-        print("Loop Started")
-        
-    # DO NOT TOUCH
-    def _start_loop(self):
-        try:
-            while self.is_running:
-                if not self.action_queue.empty():
-                    func, args = self.action_queue.get()
-                    print(f'Executing: {func.__name__}')
-                    func(*args)
-                self.loop()
-                time.sleep(self.LOOP_RATE)
-        except Exception as e:
-            print(f'ERROR Background loop crashed: {e}')
-            
-            
-    # DO NOT TOUCH
-    def shutdown(self):
-        print("Shutting down gracefully")
-        self.is_running = False
-        self.kinova_robot.stop()
-        sys.exit(0)
-            
     def start(self):
-        self.home = False
-        self.kinova_robot.set_torque(False)
-        pass        
+        self.home = False     
         
     def loop(self):        
-        is_7DOF = False
+        is_7DOF = None
         
         if(is_7DOF is None):
             raise ValueError("If you are using the big robot set is_7DOF to true. If you are using the small robot set is_7DOF to false")
@@ -74,7 +30,17 @@ class Main:
             self.home = True            
 
 if __name__ == "__main__":
-    final_project = Main()
+    simulate = None
+    
+    if(simulate is None):
+        raise ValueError("Pick simulate or real world robot")
+    
+    if simulate:
+        # final_project = Main(simulate=True, urdf_path="visualizer/6dof/urdf/6dof.urdf")
+        # final_project = Main(simulate=True, urdf_path="visualizer/7dof/urdf/7dof.urdf")
+        pass
+    else:
+        final_project = Main(is_suction=False)
     
     try:
         while True:
