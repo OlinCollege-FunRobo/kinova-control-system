@@ -477,6 +477,14 @@ class SimKinova:
     def set_torque(self, enable: bool):
         pass  # Not applicable for standard position-control simulation
 
+    def get_ee_pose(self):
+        with self._data_lock:
+            state = self.p.getLinkState(self.robot_id, 7)
+
+            pos = state[0]  # World position [x, y, z]
+            ori = state[1]  # World orientation as a quaternion [x, y, z, w] # Assuming last joint is EE
+            return pos, self.p.getEulerFromQuaternion(ori)
+
     def stop(self):
         self._is_running = False
         if self.p:
@@ -513,6 +521,14 @@ class Kinova:
 
     def set_torque(self, enable: bool):
         self.base_kinova.set_torque(enable)
+
+    def get_ee_pose(self):
+        if isinstance(self.base_kinova, SimKinova):
+            return self.base_kinova.get_ee_pose()
+        else:
+            raise NotImplementedError(
+                "get_ee_pose is only implemented for simulation mode."
+            )
 
     def stop(self):
         self.base_kinova.stop()
