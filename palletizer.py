@@ -60,7 +60,7 @@ class Palletizer(BaseApp):
         ## PICK STATE ##
         if self.state == State.PICK:
             # Move down and grasp the box
-            ee_goal = self.ee_pose
+            ee_goal = EndEffector(*self.box_poses[0], 0, 3.14, 0)
             next_pose = calc_inverse_kinematics(ee_goal, self.curr_joint_angles)
             self.kinova_robot.set_joint_angles(next_pose)
             self.kinova_robot.close_gripper()
